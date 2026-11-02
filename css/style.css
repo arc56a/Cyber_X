@@ -1,0 +1,381 @@
+:root {
+  color-scheme: dark;
+  --bg: #020102;
+  --dark-red: #8f0e24;
+  --ruby: #bd1d32;
+  --deep-wine: #540815;
+  --ink: #f7eff1;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Bahnschrift", sans-serif;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000000;
+}
+
+/* حاوية شاشة الهاتف */
+.stage {
+  position: relative;
+  isolation: isolate;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* على شاشات الجوال: ملء دقيق 100% للشاشة */
+@media (max-width: 500px) {
+  html, body {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    background: var(--bg);
+  }
+  .stage {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    background: var(--bg);
+  }
+}
+
+/* على شاشات الديسكتوب: إطار هاتف أنيق وهادئ بلون أسود مطعم بأحمر داكن */
+@media (min-width: 501px) {
+  .stage {
+    width: 395px;
+    height: min(854px, 92vh);
+    height: min(854px, 92dvh);
+    border-radius: 46px;
+    border: 1px solid rgba(189, 29, 50, 0.28);
+    box-shadow:
+      0 0 35px -8px rgba(143, 14, 36, 0.2),
+      0 25px 70px rgba(0, 0, 0, 0.95);
+    background: var(--bg);
+  }
+}
+
+/* الكانفاس */
+.scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  display: block;
+  background: var(--bg);
+}
+
+/* الهيدر العلوي */
+.topbar {
+  position: relative;
+  z-index: 10;
+  padding: max(22px, calc(env(safe-area-inset-top) + 12px)) 24px 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  pointer-events: none;
+}
+
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  user-select: none;
+}
+
+.brand-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+.brand-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  /* منع حفظ أو تنزيل الصورة نهائياً عند الضغط المطول أو السحب */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+.brand-name {
+  font-family: 'Orbitron', 'Rajdhani', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 0 0 16px rgba(189, 29, 50, 0.5);
+}
+
+/* حاوية المحتوى الرئيسي */
+.main-content {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px 30px 22px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  gap: 22px;
+}
+
+/* نصوص متغيرة كل 3 ثواني تطفو بحرية وبدون حقل مستطيل */
+.ticker-wrapper {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 4px 10px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.ticker-text {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: #f7eff1;
+  margin: 0;
+  text-shadow: 0 0 14px rgba(189, 29, 50, 0.45);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ticker-text.fade-out {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+.ticker-text.fade-in {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+/* قسم الروابط والتطبيقات */
+.links-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* بطاقة تطبيق الأندرويد المميزة */
+.app-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(143, 14, 36, 0.35) 0%, rgba(20, 4, 8, 0.7) 100%);
+  border: 1px solid rgba(189, 29, 50, 0.55);
+  color: #ffffff;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(143, 14, 36, 0.25);
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.app-card:hover, .app-card:active {
+  transform: translateY(-2px);
+  border-color: rgba(255, 107, 126, 0.85);
+  box-shadow: 0 12px 28px rgba(189, 29, 50, 0.4);
+  background: linear-gradient(135deg, rgba(189, 29, 50, 0.45) 0%, rgba(30, 6, 12, 0.8) 100%);
+}
+
+.app-content {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.app-icon-box {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(189, 29, 50, 0.25);
+  border: 1px solid rgba(255, 107, 126, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff6b7e;
+  flex-shrink: 0;
+}
+
+.app-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: right;
+}
+
+.app-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.app-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.app-subtitle {
+  font-size: 11px;
+  color: rgba(247, 239, 241, 0.65);
+}
+
+.app-action-arrow {
+  color: #ff6b7e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.app-card:hover .app-action-arrow {
+  transform: translateX(-4px);
+}
+
+.app-card.is-coming-soon {
+  cursor: default;
+}
+
+.app-card.is-coming-soon:hover {
+  transform: none;
+  border-color: rgba(189, 29, 50, 0.55);
+  box-shadow: 0 8px 24px rgba(143, 14, 36, 0.25);
+  background: linear-gradient(135deg, rgba(143, 14, 36, 0.35) 0%, rgba(20, 4, 8, 0.7) 100%);
+}
+
+.coming-soon-tag {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: #ff6b7e;
+  background: rgba(189, 29, 50, 0.25);
+  border: 1px solid rgba(255, 107, 126, 0.35);
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+/* شبكة منصات التواصل الاجتماعي */
+.social-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(18, 4, 8, 0.55);
+  border: 1px solid rgba(189, 29, 50, 0.28);
+  color: #f7eff1;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  backdrop-filter: blur(6px);
+  transition: all 0.22s ease;
+  cursor: pointer;
+}
+
+.social-btn:hover, .social-btn:active {
+  transform: translateY(-2px);
+  border-color: rgba(189, 29, 50, 0.7);
+  background: rgba(45, 8, 18, 0.65);
+  box-shadow: 0 6px 20px rgba(189, 29, 50, 0.25);
+  color: #ffffff;
+}
+
+.social-btn svg {
+  flex-shrink: 0;
+  color: #ff6b7e;
+  transition: transform 0.2s ease;
+}
+
+.social-btn:hover svg {
+  transform: scale(1.12);
+}
+
+.social-btn.is-coming-soon {
+  opacity: 0.75;
+  cursor: default;
+}
+
+.social-btn.is-coming-soon:hover {
+  transform: none;
+  border-color: rgba(189, 29, 50, 0.4);
+  background: rgba(18, 4, 8, 0.55);
+  box-shadow: none;
+}
+
+.soon-badge {
+  font-size: 10px;
+  background: rgba(189, 29, 50, 0.35);
+  border: 1px solid rgba(255, 107, 126, 0.4);
+  color: #ff6b7e;
+  padding: 1px 6px;
+  border-radius: 8px;
+  margin-right: 4px;
+}
+
